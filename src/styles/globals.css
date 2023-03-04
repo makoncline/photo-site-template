@@ -1,3 +1,10 @@
 @tailwind base;
+
+@layer base {
+  html {
+    @apply bg-surface-1 text-text-1;
+  }
+}
+
 @tailwind components;
 @tailwind utilities;
