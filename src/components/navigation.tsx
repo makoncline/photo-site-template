@@ -56,8 +56,12 @@ export const Navigation = ({
               <NavigationMenuPrimitive.Content className="absolute left-0 top-full flex w-screen justify-end">
                 <div className="m-3 w-3/4 max-w-xs rounded bg-surface-2 p-4 shadow-sm">
                   <ul className=" flex w-full list-none flex-col gap-1">
-                    <NavLinks />
-                    <Separator />
+                    {links.length ? (
+                      <>
+                        <NavLinks />
+                        <Separator />
+                      </>
+                    ) : null}
                     <SignIn />
                   </ul>
                 </div>
