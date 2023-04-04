@@ -1,5 +1,5 @@
 import { useSession, signOut, signIn } from "next-auth/react";
-import { Avatar } from "./Avatar";
+import { Avatar } from "./avatar";
 
 export const SignIn: React.FC = () => {
   const { data: sessionData } = useSession();
@@ -11,9 +11,7 @@ export const SignIn: React.FC = () => {
       <Avatar imageUrl={image} fallback={initial} />
       <button
         className="inline-block rounded-lg py-1 px-2 text-sm hover:bg-glint/10"
-        onClick={
-          sessionData ? () => void signOut() : () => void signIn("google")
-        }
+        onClick={sessionData ? () => void signOut() : () => void signIn()}
       >
         {sessionData ? "Sign out" : "Sign in"}
       </button>

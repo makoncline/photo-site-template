@@ -33,6 +33,7 @@ const config = {
         },
       },
     ],
+    "react/no-unescaped-entities": 0,
   },
 };
 
