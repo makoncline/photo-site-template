@@ -61,7 +61,7 @@ export const VerificationStep = ({ email }: { email: string }) => {
             placeholder="ABC123"
             className="block w-full rounded-lg border border-surface-4 bg-surface-3  p-2.5 text-sm text-text-1 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
           />
-          {errors.code && <p className="text-red-400">{errors.code.message}</p>}
+          {errors.code && <p className="text-danger">{errors.code.message}</p>}
         </div>
         <button
           type="submit"
@@ -71,7 +71,7 @@ export const VerificationStep = ({ email }: { email: string }) => {
           {isLoading ? "Please wait..." : "Verify"}
         </button>
         {isError && (
-          <p className="text-red-400">Invalid Code. Please try again.</p>
+          <p className="text-danger">Invalid Code. Please try again.</p>
         )}
       </form>
     </div>

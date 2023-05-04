@@ -58,7 +58,7 @@ export const EmailStep = ({
             className="block w-full rounded-lg border border-surface-4 bg-surface-3  p-2.5 text-sm text-text-1 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
           />
           {errors.email && (
-            <p className="text-red-400">{errors.email.message}</p>
+            <p className="text-danger">{errors.email.message}</p>
           )}
         </div>
         <button
@@ -69,9 +69,7 @@ export const EmailStep = ({
           {isLoading ? "Please wait..." : "Send code"}
         </button>
         {isError && (
-          <p className="text-red-400">
-            Something went wrong. Please try again.
-          </p>
+          <p className="text-danger">Something went wrong. Please try again.</p>
         )}
       </form>
     </div>

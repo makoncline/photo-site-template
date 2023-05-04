@@ -28,16 +28,11 @@ const FormPage = () => {
 
   const { handleSubmit, reset, register, formState } = useZodForm({
     schema: validationSchema,
-    defaultValues: {
-      title: "",
-      text: "",
-    },
   });
 
   return (
     <>
       <h2 className="text-3xl">Posts</h2>
-
       <div className="flex flex-col gap-2 py-2">
         {posts &&
           posts.map((post) => (
@@ -62,22 +57,20 @@ const FormPage = () => {
         <div>
           <label>
             Title
-            <br />
             <input {...register("title")} className=" bg-surface-2" />
           </label>
 
           {formState.errors.title?.message && (
-            <p className="text-red-700">{formState.errors.title?.message}</p>
+            <p className="text-danger">{formState.errors.title?.message}</p>
           )}
         </div>
         <div>
           <label>
             Text
-            <br />
             <textarea {...register("text")} className=" bg-surface-2" />
           </label>
           {formState.errors.text?.message && (
-            <p className="text-red-700">{formState.errors.text?.message}</p>
+            <p className="text-danger">{formState.errors.text?.message}</p>
           )}
         </div>
 
@@ -86,7 +79,7 @@ const FormPage = () => {
           disabled={mutation.isLoading}
           className="bg-brand-1 p-2"
         >
-          {mutation.isLoading ? "Loading" : "Submit"}
+          {mutation.isLoading ? "Loading..." : "Submit"}
         </button>
       </form>
     </>
