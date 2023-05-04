@@ -13,9 +13,15 @@ const config = {
           3: colors.slate[700],
           4: colors.slate[600],
         },
+        surfaceReverse: {
+          1: colors.slate[200],
+        },
         text: {
           1: colors.slate[200],
           2: colors.slate[300],
+        },
+        textReverse: {
+          1: colors.slate[900],
         },
         brand: {
           0: colors.blue[400],
