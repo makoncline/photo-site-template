@@ -10,7 +10,6 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 import { createTransport } from "nodemailer";
-import crypto from "node:crypto";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../tailwind.config.cjs";
 import { z } from "zod";
@@ -105,46 +104,41 @@ export const authOptions: NextAuthOptions = {
         const surfaceReverse = colors.surfaceReverse?.[1];
         const text = colors.text?.[1];
         const textReverse = colors.textReverse?.[1];
-        // uncomment when you have wifi
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        // const result = await createTransport(env.EMAIL_SERVER).sendMail({
-        //   to: identifier,
-        //   from: env.EMAIL_FROM,
-        //   subject: `Sign in to ${signInURL.host}`,
-        //   text: `Sign in on ${signInURL.toString()} using the magic code: ${token}`,
-        //   html: `
-        //   <body style="background: ${surface};">
-        //     <table width="100%" border="0" cellspacing="20" cellpadding="0" style="background: ${surface}; max-width: 600px; margin: auto; border-radius: 10px;">
-        //       <tr>
-        //         <td align="center" style="padding: 10px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${text};">
-        //           Sign in to <strong>${escapedHost}</strong> using this magic code:
-        //         </td>
-        //       </tr>
-        //       <tr>
-        //         <td align="center" style="padding: 20px 0;">
-        //           <div style="background-color: ${surfaceReverse}; border-radius: 5px; padding: 20px;">
-        //             <p style="font-size: 24px; font-family: Helvetica, Arial, sans-serif; color: ${textReverse}; text-align: center; margin: 0;">
-        //               ${token}
-        //             </p>
-        //           </div>
-        //         </td>
-        //       </tr>
-        //       <tr>
-        //         <td align="center" style="padding: 0px 0px 10px 0px; font-size: 16px; line-height: 22px; font-family: Helvetica, Arial, sans-serif; color: ${text};">
-        //           If you did not request this email you can safely ignore it.
-        //         </td>
-        //       </tr>
-        //     </table>
-        //   </body>
-        //   `,
-        // });
-        // // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        // const failed = result.rejected.concat(result.pending).filter(Boolean);
-        // // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        // if (failed.length) {
-        //   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        //   throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
-        // }
+        const result = await createTransport(env.EMAIL_SERVER).sendMail({
+          to: identifier,
+          from: env.EMAIL_FROM,
+          subject: `Sign in to ${signInURL.host}`,
+          text: `Sign in on ${signInURL.toString()} using the magic code: ${token}`,
+          html: `
+          <body style="background: ${surface};">
+            <table width="100%" border="0" cellspacing="20" cellpadding="0" style="background: ${surface}; max-width: 600px; margin: auto; border-radius: 10px;">
+              <tr>
+                <td align="center" style="padding: 10px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${text};">
+                  Sign in to <strong>${escapedHost}</strong> using this magic code:
+                </td>
+              </tr>
+              <tr>
+                <td align="center" style="padding: 20px 0;">
+                  <div style="background-color: ${surfaceReverse}; border-radius: 5px; padding: 20px;">
+                    <p style="font-size: 24px; font-family: Helvetica, Arial, sans-serif; color: ${textReverse}; text-align: center; margin: 0;">
+                      ${token}
+                    </p>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" style="padding: 0px 0px 10px 0px; font-size: 16px; line-height: 22px; font-family: Helvetica, Arial, sans-serif; color: ${text};">
+                  If you did not request this email you can safely ignore it.
+                </td>
+              </tr>
+            </table>
+          </body>
+          `,
+        });
+        const failed = result.rejected.concat(result.pending).filter(Boolean);
+        if (failed.length) {
+          throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
+        }
       },
     }),
   ],
