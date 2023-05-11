@@ -1,27 +1,53 @@
 import type { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import React from "react";
-import { EmailStep } from "~/components/EmailStep";
-import { VerificationStep } from "~/components/VerificationStep";
+import Link from "next/link";
+import { buttonVariants } from "~/components/ui/button";
+import { cn } from "~/lib/utils";
+import { Icon } from "~/components/icon";
+import { UserAuthForm } from "~/components/user-auth-form";
 
 const SignIn = () => {
   const [email, setEmail] = React.useState<string | null>(null);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <div className="shadowsm:p-6 w-full max-w-sm rounded-lg border  border-surface-2 bg-surface-1 p-4 md:p-8">
-          {email ? (
-            <VerificationStep email={email} />
-          ) : (
-            <EmailStep
-              onSuccess={(email) => {
-                setEmail(email);
-              }}
-            />
+    <>
+      <div className="container flex h-screen w-screen flex-col items-center justify-center">
+        <Link
+          href="/"
+          className={cn(
+            buttonVariants({ variant: "ghost" }),
+            "absolute left-4 top-4 md:left-8 md:top-8"
           )}
+        >
+          <>
+            <Icon.chevronLeft className="mr-2 h-4 w-4" />
+            Back
+          </>
+        </Link>
+        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+          <div className="flex flex-col space-y-2 text-center">
+            <Icon.logo className="mx-auto h-6 w-6" />
+            <h1 className="text-2xl font-semibold tracking-tight">
+              {email ? "Email sent" : "Welcome back"}
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              {email
+                ? "Enter the code we sent to your email address to sign in to your account. If you don't see the email, check your spam folder."
+                : "Enter your email to sign in to your account"}
+            </p>
+          </div>
+          <UserAuthForm email={email} setEmail={setEmail} />
+          <p className="px-8 text-center text-sm text-muted-foreground">
+            <Link
+              href="/auth/register"
+              className="hover:text-brand underline underline-offset-4"
+            >
+              Don&apos;t have an account? Sign Up
+            </Link>
+          </p>
         </div>
       </div>
-    </main>
+    </>
   );
 };
 

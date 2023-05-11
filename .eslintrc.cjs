@@ -34,6 +34,7 @@ const config = {
       },
     ],
     "react/no-unescaped-entities": 0,
+    "@typescript-eslint/no-var-requires": 0,
   },
 };
 
