@@ -13,6 +13,9 @@ import {
   X,
   Laptop,
   Image,
+  ArrowRight,
+  FileText,
+  PanelLeftOpen,
   type Icon as LucideIcon,
 } from "lucide-react";
 
@@ -33,4 +36,7 @@ export const Icon = {
   moon: Moon,
   check: Check,
   laptop: Laptop,
+  arrowRight: ArrowRight,
+  post: FileText,
+  sidebarOpen: PanelLeftOpen,
 };

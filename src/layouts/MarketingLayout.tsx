@@ -5,13 +5,17 @@ import { cn } from "~/lib/utils";
 import { buttonVariants } from "~/components/ui/button";
 import { MainNav } from "~/components/main-nav";
 import { ModeToggle } from "~/components/mode-toggle";
-import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { UserAccountNav } from "~/components/user-account-nav";
 
 interface MarketingLayoutProps {
   children: React.ReactNode;
 }
 
 export function MarketingLayout({ children }: MarketingLayoutProps) {
+  const { data: sessionData } = useSession();
+  const user = sessionData?.user;
+  const isUserLoggedIn = user !== undefined;
   return (
     <div className="flex min-h-screen flex-col">
       <header className="container z-40 bg-background">
@@ -20,16 +24,19 @@ export function MarketingLayout({ children }: MarketingLayoutProps) {
           <div className="flex gap-6">
             <ModeToggle />
             <nav>
-              <Link
-                href="/auth/sign-in"
-                className={cn(
-                  buttonVariants({ variant: "secondary", size: "sm" }),
-                  "px-4"
-                )}
-              >
-                Login
-              </Link>
-              <button onClick={() => signOut()}>sign out</button>
+              {isUserLoggedIn ? (
+                <UserAccountNav user={user} />
+              ) : (
+                <Link
+                  href="/auth/sign-in"
+                  className={cn(
+                    buttonVariants({ variant: "secondary", size: "sm" }),
+                    "px-4"
+                  )}
+                >
+                  Login
+                </Link>
+              )}
             </nav>
           </div>
         </div>

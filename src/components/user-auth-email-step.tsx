@@ -34,7 +34,7 @@ export function EmailStep({ onSuccess, className, ...props }: EmailStepProps) {
     const signInResult = await signIn("email", {
       email: email.toLowerCase(),
       redirect: false,
-      callbackUrl: searchParams?.get("from") || "/",
+      callbackUrl: searchParams?.get("from") || "/dashboard",
     });
     if (!signInResult?.ok) {
       setStatus("error");
