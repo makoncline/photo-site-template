@@ -4,22 +4,17 @@ import { dashboardConfig } from "~/config/dashboard";
 import { MainNav } from "~/components/main-nav";
 import { SidebarNav } from "~/components/sidebar-nav";
 import { UserAccountNav } from "~/components/user-account-nav";
-import { useSession } from "next-auth/react";
 import { ModeToggle } from "~/components/mode-toggle";
+import { useSignedInUser } from "~/hooks/useSignedInUser";
 
 interface DashboardLayoutProps {
   children?: React.ReactNode;
 }
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
-  const { data: sessionData } = useSession();
-  const user = sessionData?.user;
-  const path = usePathname();
-  if (!sessionData) {
-    return null;
-  }
+export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const { user } = useSignedInUser();
   if (!user) {
-    return redirect(`/auth/sign-in?from=${path}`);
+    return null;
   }
 
   return (

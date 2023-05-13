@@ -1,26 +1,26 @@
+import type { User } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
 import type { ComponentType } from "react";
 import { Icon } from "~/components/icon";
 
+export type WithAuthProps = { user: User };
+
 export function withProtectedAuth<T extends Record<string, unknown>>(
   Component: ComponentType<T>
 ) {
-  const AuthenticatedComponent = (props: T) => {
-    const { status } = useSession();
+  const AuthenticatedComponent = (props: T & WithAuthProps) => {
+    const { status, data: session } = useSession();
     if (status === "unauthenticated") {
-      void signIn("google");
+      return signIn();
     }
     if (status !== "authenticated")
-      // maybe show a prompt to sign in instead of just redirecting
       return (
         <div className="flex h-full w-full items-center justify-center p-10">
           <Icon.spinner className="mr-2 h-4 w-4 animate-spin" />
         </div>
       );
-    return <Component {...props} />;
+    return <Component {...props} user={session.user} />;
   };
 
   return AuthenticatedComponent;
 }
-
-export default withProtectedAuth;

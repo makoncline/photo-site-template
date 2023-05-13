@@ -1,8 +1,13 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import DashboardLayout from "~/layouts/DashboardLayout";
+import { DashboardHeader } from "~/components/dashboard-header";
+import { DashboardShell } from "~/components/dashboard-shell";
+import { DashboardLayout } from "~/layouts/dashboard-layout";
+import { UserSettingsForm } from "~/components/user-settings-form";
+import { withProtectedAuth } from "~/lib/withAuth";
+import type { WithAuthProps } from "~/lib/withAuth";
 
-const Settings: NextPage = () => {
+const Settings: NextPage<WithAuthProps> = ({ user }) => {
   return (
     <>
       <Head>
@@ -12,14 +17,18 @@ const Settings: NextPage = () => {
         <meta name="referrer" content="no-referrer" />
       </Head>
       <DashboardLayout>
-        <main className="flex min-h-screen flex-col items-center justify-center">
-          <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-            dis da settings
+        <DashboardShell>
+          <DashboardHeader
+            heading="Settings"
+            text="Manage account and website settings."
+          />
+          <div className="grid gap-10">
+            <UserSettingsForm user={{ id: user.id, name: user.name || "" }} />
           </div>
-        </main>
+        </DashboardShell>
       </DashboardLayout>
     </>
   );
 };
 
-export default Settings;
+export default withProtectedAuth(Settings);
