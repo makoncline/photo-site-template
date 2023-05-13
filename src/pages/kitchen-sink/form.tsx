@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { useZodForm } from "~/hooks/useZodForm";
-import withProtectedAuth from "~/lib/withAuth";
+import { withProtectedAuth } from "~/lib/withAuth";
 import { api } from "~/utils/api";
 
 // validation schema is used by server
