@@ -7,7 +7,7 @@ import {
 import EmailProvider from "next-auth/providers/email";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "~/env.mjs";
-import { prisma } from "~/server/db";
+import { db } from "~/server/db";
 import { createTransport } from "nodemailer";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../tailwind.config.cjs";
@@ -53,7 +53,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(db),
   providers: [
     EmailProvider({
       maxAge: 5 * 60,

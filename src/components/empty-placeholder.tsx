@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { cn } from "~/lib/utils";
-import { Icon } from "~/components/icon";
+import { Icons } from "~/components/icons";
 
 type EmptyPlaceholderProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -26,7 +26,7 @@ export function EmptyPlaceholder({
 }
 
 type EmptyPlaceholderIconProps = Partial<React.SVGProps<SVGSVGElement>> & {
-  name: keyof typeof Icon;
+  name: keyof typeof Icons;
 };
 
 EmptyPlaceholder.Icon = function EmptyPlaceHolderIcon({
@@ -34,7 +34,7 @@ EmptyPlaceholder.Icon = function EmptyPlaceHolderIcon({
   className,
   ...props
 }: EmptyPlaceholderIconProps) {
-  const EmptyIcon = Icon[name];
+  const EmptyIcon = Icons[name];
 
   if (!EmptyIcon) {
     return null;

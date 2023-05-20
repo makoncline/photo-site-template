@@ -8,7 +8,7 @@ import { buttonVariants } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { toast } from "~/components/ui/use-toast";
-import { Icon } from "~/components/icon";
+import { Icons } from "~/components/icons";
 import { useZodForm } from "~/hooks/useZodForm";
 import { useStatus } from "~/hooks/useStatus";
 
@@ -84,7 +84,7 @@ export function EmailStep({ onSuccess, className, ...props }: EmailStepProps) {
           </div>
           <button className={cn(buttonVariants())} disabled={isLoading}>
             {isLoading && (
-              <Icon.spinner className="mr-2 h-4 w-4 animate-spin" />
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Sign In with Email
           </button>

@@ -5,7 +5,7 @@ import { useStatus } from "~/hooks/useStatus";
 import { useZodForm } from "~/hooks/useZodForm";
 import { toast } from "~/components/ui/use-toast";
 import { cn } from "~/lib/utils";
-import { Icon } from "./icon";
+import { Icons } from "./icons";
 import { buttonVariants } from "./ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -80,7 +80,7 @@ export const VerificationStep = ({
             </div>
             <button className={cn(buttonVariants())} disabled={isLoading}>
               {isLoading && (
-                <Icon.spinner className="mr-2 h-4 w-4 animate-spin" />
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
               Verify
             </button>

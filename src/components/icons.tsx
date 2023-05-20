@@ -16,12 +16,13 @@ import {
   ArrowRight,
   FileText,
   PanelLeftOpen,
+  CreditCard,
   type Icon as LucideIcon,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
 
-export const Icon = {
+export const Icons = {
   logo: Image,
   close: X,
   spinner: Loader2,
@@ -39,4 +40,5 @@ export const Icon = {
   arrowRight: ArrowRight,
   post: FileText,
   sidebarOpen: PanelLeftOpen,
+  billing: CreditCard,
 };

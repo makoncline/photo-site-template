@@ -1,7 +1,7 @@
 import type { User } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
 import type { ComponentType } from "react";
-import { Icon } from "~/components/icon";
+import { Icons } from "~/components/icons";
 
 export type WithAuthProps = { user: User };
 
@@ -16,7 +16,7 @@ export function withProtectedAuth<T extends Record<string, unknown>>(
     if (status !== "authenticated")
       return (
         <div className="flex h-full w-full items-center justify-center p-10">
-          <Icon.spinner className="mr-2 h-4 w-4 animate-spin" />
+          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         </div>
       );
     return <Component {...props} user={session.user} />;

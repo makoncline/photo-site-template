@@ -18,7 +18,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { toast } from "~/components/ui/use-toast";
-import { Icon } from "~/components/icon";
+import { Icons } from "~/components/icons";
 import { useZodForm } from "~/hooks/useZodForm";
 
 interface UsersettingsFormProps extends React.HTMLAttributes<HTMLFormElement> {
@@ -99,7 +99,9 @@ export function UserSettingsForm({
             className={cn(buttonVariants(), className)}
             disabled={isSaving}
           >
-            {isSaving && <Icon.spinner className="mr-2 h-4 w-4 animate-spin" />}
+            {isSaving && (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            )}
             <span>Save</span>
           </button>
         </CardFooter>

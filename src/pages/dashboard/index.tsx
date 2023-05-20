@@ -3,7 +3,7 @@ import Head from "next/head";
 import { DashboardHeader } from "~/components/dashboard-header";
 import { DashboardShell } from "~/components/dashboard-shell";
 import { EmptyPlaceholder } from "~/components/empty-placeholder";
-import { Icon } from "~/components/icon";
+import { Icons } from "~/components/icons";
 import { buttonVariants } from "~/components/ui/button";
 import type { ButtonProps } from "~/components/ui/button";
 import { DashboardLayout } from "~/layouts/dashboard-layout";
@@ -58,7 +58,7 @@ export function PostCreateButton({
       )}
       {...props}
     >
-      <Icon.add className="mr-2 h-4 w-4" />
+      <Icons.add className="mr-2 h-4 w-4" />
       New post
     </button>
   );

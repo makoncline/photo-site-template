@@ -20,6 +20,9 @@ const server = z.object({
   ),
   EMAIL_SERVER: z.string().min(1),
   EMAIL_FROM: z.string().min(1),
+  STRIPE_API_KEY: z.string().min(1),
+  STRIPE_WEBHOOK_SECRET: z.string().min(1),
+  STRIPE_PRO_MONTHLY_PLAN_ID: z.string().min(1),
 });
 
 /**
@@ -29,6 +32,7 @@ const server = z.object({
 const client = z.object({
   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().min(1),
   NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET: z.string().min(1),
+  NEXT_PUBLIC_APP_URL: z.string().min(1),
 });
 
 /**
@@ -48,6 +52,10 @@ const processEnv = {
     process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET:
     process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET,
+  STRIPE_API_KEY: process.env.STRIPE_API_KEY,
+  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+  STRIPE_PRO_MONTHLY_PLAN_ID: process.env.STRIPE_PRO_MONTHLY_PLAN_ID,
+  NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
 };
 
 // Don't touch the part below

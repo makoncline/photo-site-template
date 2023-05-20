@@ -4,7 +4,7 @@ import type { NavItem } from "~/types";
 import { siteConfig } from "~/config/site";
 import { cn } from "~/lib/utils";
 import { MobileNav } from "~/components/mobile-nav";
-import { Icon } from "~/components/icon";
+import { Icons } from "~/components/icons";
 
 interface MainNavProps {
   items?: NavItem[];
@@ -17,7 +17,7 @@ export function MainNav({ items, children }: MainNavProps) {
   return (
     <div className="flex gap-6 md:gap-10">
       <Link href="/" className="hidden items-center space-x-2 md:flex">
-        <Icon.logo />
+        <Icons.logo />
         <span className="hidden font-bold sm:inline-block">
           {siteConfig.name}
         </span>
@@ -43,7 +43,7 @@ export function MainNav({ items, children }: MainNavProps) {
         className="flex items-center space-x-2 md:hidden"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
       >
-        {showMobileMenu ? <Icon.close /> : <Icon.logo />}
+        {showMobileMenu ? <Icons.close /> : <Icons.logo />}
         <span className="font-bold">Menu</span>
       </button>
       {showMobileMenu && items && (
