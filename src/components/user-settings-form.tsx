@@ -1,12 +1,8 @@
-"use client";
-
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import type { User } from "@prisma/client";
 import * as z from "zod";
 
 import { cn } from "~/lib/utils";
-import { buttonVariants } from "~/components/ui/button";
 import {
   Card,
   CardContent,
@@ -16,96 +12,107 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import { toast } from "~/components/ui/use-toast";
 import { Icons } from "~/components/icons";
 import { useZodForm } from "~/hooks/useZodForm";
+import { Button } from "~/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
+import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
 
 interface UsersettingsFormProps extends React.HTMLAttributes<HTMLFormElement> {
-  user: Pick<User, "id" | "name">;
+  user: Pick<User, "name">;
 }
 
-const userSettingsSchema = z.object({ name: z.string().min(1) });
-type FormData = z.infer<typeof userSettingsSchema>;
+export const userSettingsFormSchema = z.object({ name: z.string().min(1) });
+type FormData = z.infer<typeof userSettingsFormSchema>;
 export function UserSettingsForm({
   user,
   className,
   ...props
 }: UsersettingsFormProps) {
-  const router = useRouter();
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useZodForm({
-    schema: userSettingsSchema,
+  const { update } = useSession();
+  const mutation = api.user.updateSettings.useMutation({
+    onSuccess: () => {
+      // eslint thinks this is any, but it's not
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      update();
+    },
+  });
+  const form = useZodForm({
+    schema: userSettingsFormSchema,
+    defaultValues: { name: user.name || undefined },
   });
   const [isSaving, setIsSaving] = React.useState<boolean>(false);
 
   async function onSubmit(data: FormData) {
     setIsSaving(true);
-    // actually save using trpc here
-    const response = await Promise.resolve({ ok: true });
-    setIsSaving(false);
-
-    if (!response?.ok) {
+    try {
+      await mutation.mutateAsync(data);
+      setIsSaving(false);
+      toast({
+        description: "Your name has been updated.",
+      });
+    } catch (error) {
       return toast({
         title: "Something went wrong.",
         description: "Your name was not updated. Please try again.",
         variant: "destructive",
       });
     }
-
-    toast({
-      description: "Your name has been updated.",
-    });
-
-    router.refresh();
   }
 
   return (
-    <form
-      className={cn(className)}
-      onSubmit={handleSubmit(onSubmit)}
-      {...props}
-    >
-      <Card>
-        <CardHeader>
-          <CardTitle>Your Name</CardTitle>
-          <CardDescription>
-            Please enter your full name or a display name you are comfortable
-            with.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="name">
-              Name
-            </Label>
-            <Input
-              id="name"
-              className="w-[400px]"
-              size={32}
-              {...register("name")}
+    <Form {...form}>
+      <form
+        className={cn("space-y-8", className)}
+        onSubmit={form.handleSubmit(onSubmit)}
+        {...props}
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Your Name {user.name}</CardTitle>
+            <CardDescription>
+              Please enter your full name or a display name you are comfortable
+              with.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel hidden>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="" {...field} />
+                  </FormControl>
+                  <FormDescription hidden>
+                    This is your public display name.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors?.name && (
-              <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
-            )}
-          </div>
-        </CardContent>
-        <CardFooter>
-          <button
-            type="submit"
-            className={cn(buttonVariants(), className)}
-            disabled={isSaving}
-          >
-            {isSaving && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            <span>Save</span>
-          </button>
-        </CardFooter>
-      </Card>
-    </form>
+          </CardContent>
+          <CardFooter>
+            <Button type="submit" disabled={isSaving}>
+              {isSaving && (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              <span>Save</span>
+            </Button>
+          </CardFooter>
+        </Card>
+      </form>
+    </Form>
   );
 }

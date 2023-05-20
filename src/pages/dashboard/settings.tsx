@@ -23,7 +23,7 @@ const Settings: NextPage<WithAuthProps> = ({ user }) => {
             text="Manage account and website settings."
           />
           <div className="grid gap-10">
-            <UserSettingsForm user={{ id: user.id, name: user.name || "" }} />
+            <UserSettingsForm user={{ name: user.name || null }} />
           </div>
         </DashboardShell>
       </DashboardLayout>
