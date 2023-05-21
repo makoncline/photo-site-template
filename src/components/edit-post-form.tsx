@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { User } from "@prisma/client";
+import type { Post, User } from "@prisma/client";
 import * as z from "zod";
 
 import { cn } from "~/lib/utils";
@@ -26,46 +26,36 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { api } from "~/utils/api";
-import { useSession } from "next-auth/react";
 
-interface UsersettingsFormProps extends React.HTMLAttributes<HTMLFormElement> {
-  user: Pick<User, "name">;
+interface EditPostFormProps extends React.HTMLAttributes<HTMLFormElement> {
+  post: Pick<Post, "id" | "title">;
 }
 
-export const userSettingsFormSchema = z.object({ name: z.string().min(1) });
-type FormData = z.infer<typeof userSettingsFormSchema>;
-export function UserSettingsForm({
-  user,
-  className,
-  ...props
-}: UsersettingsFormProps) {
-  const { update } = useSession();
-  const mutation = api.user.updateSettings.useMutation({
-    onSuccess: async () => {
-      await update();
-    },
-  });
+export const editPostFormSchema = z.object({ title: z.string().min(1) });
+type FormData = z.infer<typeof editPostFormSchema>;
+export function EditPostForm({ post, className, ...props }: EditPostFormProps) {
+  const mutation = api.post.update.useMutation();
   const form = useZodForm({
-    schema: userSettingsFormSchema,
-    defaultValues: { name: user.name || undefined },
+    schema: editPostFormSchema,
+    defaultValues: { title: post.title },
   });
   const [isSaving, setIsSaving] = React.useState<boolean>(false);
 
   async function onSubmit(data: FormData) {
     setIsSaving(true);
     try {
-      await mutation.mutateAsync(data);
-      setIsSaving(false);
+      await mutation.mutateAsync({ ...data, id: post.id });
       toast({
-        description: "Your name has been updated.",
+        description: "Your post has been updated.",
       });
     } catch (error) {
-      return toast({
+      toast({
         title: "Something went wrong.",
-        description: "Your name was not updated. Please try again.",
+        description: "Your post was not updated. Please try again.",
         variant: "destructive",
       });
     }
+    setIsSaving(false);
   }
 
   return (
@@ -76,25 +66,18 @@ export function UserSettingsForm({
         {...props}
       >
         <Card>
-          <CardHeader>
-            <CardTitle>Your Name</CardTitle>
-            <CardDescription>
-              Please enter your full name or a display name you are comfortable
-              with.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <FormField
               control={form.control}
-              name="name"
+              name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel hidden>Name</FormLabel>
+                  <FormLabel>Title</FormLabel>
                   <FormControl>
                     <Input placeholder="" {...field} />
                   </FormControl>
-                  <FormDescription hidden>
-                    This is your public display name.
+                  <FormDescription>
+                    This is the title of your post.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

@@ -17,6 +17,7 @@ import {
   FileText,
   PanelLeftOpen,
   CreditCard,
+  Trash,
   type Icon as LucideIcon,
 } from "lucide-react";
 
@@ -41,4 +42,5 @@ export const Icons = {
   post: FileText,
   sidebarOpen: PanelLeftOpen,
   billing: CreditCard,
+  trash: Trash,
 };
