@@ -79,7 +79,7 @@ export function UserSettingsForm({
       >
         <Card>
           <CardHeader>
-            <CardTitle>Your Name {user.name}</CardTitle>
+            <CardTitle>Your Name</CardTitle>
             <CardDescription>
               Please enter your full name or a display name you are comfortable
               with.
