@@ -33,12 +33,6 @@ interface PostOperationsProps {
 export function PostOperations({ post }: PostOperationsProps) {
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
-  console.log(
-    "showDeleteAlert",
-    showDeleteAlert,
-    "isDeleteLoading",
-    isDeleteLoading
-  );
 
   const mutation = api.post.delete.useMutation();
   const handleDelete = async (event: React.MouseEvent<HTMLButtonElement>) => {
