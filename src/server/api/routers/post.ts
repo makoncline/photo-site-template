@@ -16,6 +16,16 @@ export const postRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
+        include: {
+          imageOrders: {
+            include: {
+              image: true,
+            },
+            orderBy: {
+              order: "asc",
+            },
+          },
+        },
       });
       if (userId !== post.userId) {
         throw new TRPCError({
@@ -23,7 +33,8 @@ export const postRouter = createTRPCRouter({
           message: "You are not authorized to view this post",
         });
       }
-      return post;
+      const images = post.imageOrders.map((imageOrder) => imageOrder.image);
+      return { ...post, images };
     }),
   readAllPrivate: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;

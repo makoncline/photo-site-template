@@ -15,29 +15,38 @@ datasource db {
 }
 
 model Post {
-  id        String   @id @default(cuid())
-  title     String
-  published Boolean  @default(false)
-  userId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id])
-  images Image[]
+  id          String       @id @default(cuid())
+  title       String
+  published   Boolean      @default(false)
+  userId      String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  images      Image[]
+  user        User         @relation(fields: [userId], references: [id])
+  imageOrders ImageOrder[]
 }
 
 model Image {
-  id        String    @id @default(cuid())
-  key       String
-  published Boolean   @default(false)
-  deleted   DateTime?
-  userId    String
-  postId    String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id         String      @id @default(cuid())
+  key        String
+  published  Boolean     @default(false)
+  deleted    DateTime?
+  userId     String
+  postId     String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  post       Post        @relation(fields: [postId], references: [id])
+  user       User        @relation(fields: [userId], references: [id])
+  imageOrder ImageOrder?
+}
 
-  user User @relation(fields: [userId], references: [id])
-  post Post? @relation(fields: [postId], references: [id])
+model ImageOrder {
+  id      String @id @default(cuid())
+  order   Int
+  postId  String
+  post    Post   @relation(fields: [postId], references: [id])
+  imageId String @unique
+  image   Image  @relation(fields: [imageId], references: [id])
 }
 
 // Necessary for Next auth
@@ -79,8 +88,8 @@ model User {
 
   accounts Account[]
   sessions Session[]
-  posts Post[]
-  images Image[]
+  posts    Post[]
+  images   Image[]
 
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")

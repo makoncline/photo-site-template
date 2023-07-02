@@ -5,19 +5,37 @@ import { DashboardShell } from "~/components/dashboard-shell";
 import { DashboardLayout } from "~/layouts/dashboard-layout";
 import { withProtectedAuth } from "~/lib/withAuth";
 import type { WithAuthProps } from "~/lib/withAuth";
-import { api } from "~/utils/api";
+import { type RouterResults, api } from "~/utils/api";
 import { useRouter } from "next/router";
-import { notFound } from "next/navigation";
 import { CardSkeleton } from "~/components/card-skeleton";
 import { EditPostForm } from "~/components/edit-post-form";
+import { Error } from "~/components/error";
+
+type RenderComponentProps = {
+  postQuery: RouterResults<"post", "readPrivate">;
+};
+const RenderComponent = ({ postQuery }: RenderComponentProps) => {
+  if (postQuery.error) {
+    return (
+      <Error
+        title={postQuery.error.message}
+        statusCode={postQuery.error.data?.httpStatus ?? 500}
+      />
+    );
+  } else if (postQuery.status !== "success") {
+    return <CardSkeleton />;
+  } else {
+    return <EditPostForm post={postQuery.data} />;
+  }
+};
 
 const EditPost: NextPage<WithAuthProps> = () => {
   const router = useRouter();
   const postId = router.query.postId as string;
-  const { data: post, isError } = api.post.readPrivate.useQuery({ id: postId });
-  if (isError) {
-    notFound();
-  }
+  const postQuery = api.post.readPrivate.useQuery(
+    { id: postId },
+    { enabled: Boolean(postId) }
+  );
   return (
     <>
       <Head>
@@ -28,13 +46,8 @@ const EditPost: NextPage<WithAuthProps> = () => {
       </Head>
       <DashboardLayout>
         <DashboardShell>
-          <DashboardHeader
-            heading="Edit Post"
-            text="Make changes to your post here. Click save when you're done."
-          />
-          <div className="grid gap-10">
-            {post ? <EditPostForm post={post} /> : <CardSkeleton />}
-          </div>
+          <DashboardHeader heading="Edit Post" text="" />
+          <RenderComponent postQuery={postQuery} />
         </DashboardShell>
       </DashboardLayout>
     </>
