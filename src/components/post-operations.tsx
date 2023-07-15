@@ -62,7 +62,7 @@ export function PostOperations({ post }: PostOperationsProps) {
   }, [showDeleteAlert]);
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md border transition-colors hover:bg-muted">
           <Icons.ellipsis className="h-4 w-4" />
           <span className="sr-only">Open</span>
@@ -77,7 +77,6 @@ export function PostOperations({ post }: PostOperationsProps) {
           <DropdownMenuItem
             className="flex cursor-pointer items-center text-destructive focus:text-destructive"
             onSelect={(event) => {
-              //   event.preventDefault();
               setShowDeleteAlert(true);
             }}
           >
