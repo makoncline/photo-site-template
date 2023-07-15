@@ -32,7 +32,6 @@ const Typography = {
       </h2>
     )
   ),
-
   h3: React.forwardRef<HTMLHeadingElement, TypographyProps>(
     ({ children, className, ...props }, ref) => (
       <h3
@@ -47,7 +46,6 @@ const Typography = {
       </h3>
     )
   ),
-
   h4: React.forwardRef<HTMLHeadingElement, TypographyProps>(
     ({ children, className, ...props }, ref) => (
       <h4
@@ -62,7 +60,6 @@ const Typography = {
       </h4>
     )
   ),
-
   p: React.forwardRef<HTMLParagraphElement, TypographyProps>(
     ({ children, className, ...props }, ref) => (
       <p
@@ -74,7 +71,17 @@ const Typography = {
       </p>
     )
   ),
-
+  a: React.forwardRef<HTMLAnchorElement, TypographyProps>(
+    ({ children, className, ...props }, ref) => (
+      <a
+        className={cn("font-medium underline underline-offset-4", className)}
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </a>
+    )
+  ),
   blockquote: React.forwardRef<HTMLQuoteElement, TypographyProps>(
     ({ children, className, ...props }, ref) => (
       <blockquote
@@ -86,7 +93,20 @@ const Typography = {
       </blockquote>
     )
   ),
-
+  pre: React.forwardRef<HTMLPreElement, TypographyProps>(
+    ({ children, className, ...props }, ref) => (
+      <pre
+        className={cn(
+          "mb-4 mt-6 overflow-x-auto rounded-lg border bg-black py-4",
+          className
+        )}
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </pre>
+    )
+  ),
   code: React.forwardRef<HTMLPreElement, TypographyProps>(
     ({ children, className, ...props }, ref) => (
       <code
@@ -101,7 +121,6 @@ const Typography = {
       </code>
     )
   ),
-
   lead: React.forwardRef<HTMLParagraphElement, TypographyProps>(
     ({ children, className, ...props }, ref) => (
       <p
@@ -113,7 +132,6 @@ const Typography = {
       </p>
     )
   ),
-
   large: React.forwardRef<HTMLDivElement, TypographyProps>(
     ({ children, className, ...props }, ref) => (
       <div
@@ -125,7 +143,6 @@ const Typography = {
       </div>
     )
   ),
-
   small: React.forwardRef<HTMLMapElement, TypographyProps>(
     ({ children, className, ...props }, ref) => (
       <small
@@ -137,7 +154,6 @@ const Typography = {
       </small>
     )
   ),
-
   muted: React.forwardRef<HTMLParagraphElement, TypographyProps>(
     ({ children, className, ...props }, ref) => (
       <p
@@ -167,6 +183,7 @@ Typography.h2.displayName = "Typography.h2";
 Typography.h3.displayName = "Typography.h3";
 Typography.h4.displayName = "Typography.h4";
 Typography.p.displayName = "Typography.p";
+Typography.a.displayName = "Typography.a";
 Typography.blockquote.displayName = "Typography.blockquote";
 Typography.code.displayName = "Typography.code";
 Typography.lead.displayName = "Typography.lead";
@@ -174,5 +191,6 @@ Typography.large.displayName = "Typography.large";
 Typography.small.displayName = "Typography.small";
 Typography.muted.displayName = "Typography.muted";
 Typography.ul.displayName = "Typography.ul";
+Typography.pre.displayName = "Typography.pre";
 
 export default Typography;
