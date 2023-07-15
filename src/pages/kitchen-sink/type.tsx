@@ -1,5 +1,12 @@
-import Table from "~/components/table";
 import Typography from "~/components/typography";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components/ui/table";
 import { MarketingLayout } from "~/layouts/marketing-layout";
 
 function TypographyDemo() {
@@ -60,28 +67,28 @@ function TypographyDemo() {
           to tell jokes and puns again, and soon the entire kingdom was in on
           the joke.
         </Typography.p>
-        <Table.Table>
-          <Table.THead>
-            <Table.TR>
-              <Table.TH>King's Treasury</Table.TH>
-              <Table.TH>People's happiness</Table.TH>
-            </Table.TR>
-          </Table.THead>
-          <Table.TBody>
-            <Table.TR>
-              <Table.TD>Empty</Table.TD>
-              <Table.TD>Overflowing</Table.TD>
-            </Table.TR>
-            <Table.TR>
-              <Table.TD>Modest</Table.TD>
-              <Table.TD>Satisfied</Table.TD>
-            </Table.TR>
-            <Table.TR>
-              <Table.TD>Full</Table.TD>
-              <Table.TD>Ecstatic</Table.TD>
-            </Table.TR>
-          </Table.TBody>
-        </Table.Table>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>King's Treasury</TableHead>
+              <TableHead>People's happiness</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell>Empty</TableCell>
+              <TableCell>Overflowing</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Modest</TableCell>
+              <TableCell>Satisfied</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Full</TableCell>
+              <TableCell>Ecstatic</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
         <Typography.p>
           The king, seeing how much happier his subjects were, realized the
           error of his ways and repealed the joke tax. Jokester was declared a
