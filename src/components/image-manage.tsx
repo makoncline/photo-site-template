@@ -17,11 +17,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "./ui/alert-dialog";
-import { Button } from "./ui/button";
 import React from "react";
-import error from "next/error";
 import { Dialog, DialogContent } from "./ui/dialog";
 import { imageConfig } from "~/config/image";
 import { api } from "~/utils/api";
@@ -41,6 +38,7 @@ export function ImageManage({ image, className, ...props }: ImageManageProps) {
     try {
       await deleteImageMutation.mutateAsync({ id: image.id });
     } catch (error) {
+      console.error(error);
       toast({
         title: "Something went wrong.",
         description: "Your image was not deleted. Please try again.",
@@ -56,6 +54,7 @@ export function ImageManage({ image, className, ...props }: ImageManageProps) {
       });
       console.log(result);
     } catch (error) {
+      console.error(error);
       toast({
         title: "Something went wrong.",
         description: "Your image was not moved. Please try again.",

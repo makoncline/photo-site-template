@@ -1,5 +1,4 @@
 import * as React from "react";
-import type { Post } from "@prisma/client";
 import * as z from "zod";
 import Image from "next/image";
 
@@ -63,6 +62,7 @@ export function EditPostForm({ post, className, ...props }: EditPostFormProps) {
         description: "Your post has been updated.",
       });
     } catch (error) {
+      console.error(error);
       toast({
         title: "Something went wrong.",
         description: "Your post was not updated. Please try again.",
@@ -108,6 +108,7 @@ export function EditPostForm({ post, className, ...props }: EditPostFormProps) {
         return rest;
       });
     } catch (error) {
+      console.error(error);
       toast({
         title: "Something went wrong.",
         description: "Your image was not uploaded. Please try again.",
