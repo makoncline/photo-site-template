@@ -14,7 +14,8 @@ import { withProtectedAuth } from "~/lib/withAuth";
 import type { WithAuthProps } from "~/lib/withAuth";
 import { api } from "~/utils/api";
 import { useRouter } from "next/navigation";
-import { PostItem } from "~/components/post-item";
+import { postColumns } from "~/components/post-columns";
+import { DataTable } from "~/components/data-table";
 
 const Dashboard: NextPage<WithAuthProps> = () => {
   const { data: posts } = api.post.readAllPrivate.useQuery();
@@ -33,11 +34,7 @@ const Dashboard: NextPage<WithAuthProps> = () => {
           </DashboardHeader>
           <div>
             {posts?.length ? (
-              <div className="divide-y divide-border rounded-md border">
-                {posts.map((post) => (
-                  <PostItem key={post.id} post={post} />
-                ))}
-              </div>
+              <DataTable columns={postColumns} data={posts} />
             ) : (
               <EmptyPlaceholder>
                 <EmptyPlaceholder.Icon name="post" />
