@@ -4,13 +4,20 @@ import { signIn } from "next-auth/react";
 import * as z from "zod";
 
 import { cn } from "~/lib/utils";
-import { buttonVariants } from "~/components/ui/button";
+import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import { toast } from "~/components/ui/use-toast";
 import { Icons } from "~/components/icons";
 import { useZodForm } from "~/hooks/useZodForm";
 import { useStatus } from "~/hooks/useStatus";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
 
 const emailFormSchema = z.object({ email: z.string().email() });
 type EmailFormValues = z.infer<typeof emailFormSchema>;
@@ -21,13 +28,9 @@ type EmailStepProps = {
 
 export function EmailStep({ onSuccess, className, ...props }: EmailStepProps) {
   const { setStatus, isLoading } = useStatus();
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors },
-  } = useZodForm({
+  const form = useZodForm({
     schema: emailFormSchema,
+    defaultValues: { email: "" },
   });
   const onSubmit = async ({ email }: EmailFormValues) => {
     setStatus("loading");
@@ -55,41 +58,36 @@ export function EmailStep({ onSuccess, className, ...props }: EmailStepProps) {
 
   return (
     <div className={cn(className)} {...props}>
-      <form
-        onSubmit={handleSubmit(async (values) => {
-          await onSubmit(values);
-          reset();
-        })}
-      >
-        <div className="grid gap-2">
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              id="email"
-              placeholder="name@example.com"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading}
-              {...register("email")}
-            />
-            {errors?.email && (
-              <p className="px-1 text-xs text-red-600">
-                {errors.email.message}
-              </p>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 ">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="name@example.com"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                    autoCorrect="off"
+                    disabled={isLoading}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </div>
-          <button className={cn(buttonVariants())} disabled={isLoading}>
+          />
+          <Button type="submit" disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Sign In with Email
-          </button>
-        </div>
-      </form>
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 }

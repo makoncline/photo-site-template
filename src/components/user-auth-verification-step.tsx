@@ -6,9 +6,25 @@ import { useZodForm } from "~/hooks/useZodForm";
 import { toast } from "~/components/ui/use-toast";
 import { cn } from "~/lib/utils";
 import { Icons } from "./icons";
-import { buttonVariants } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "~/components/ui/input-otp";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
+import register from "~/pages/auth/register";
 
 const verificationFormSchema = z.object({ code: z.string().min(6) });
 type VerificationFormValues = z.infer<typeof verificationFormSchema>;
@@ -24,13 +40,9 @@ export const VerificationStep = ({
 }: VerificationStepProps) => {
   const router = useRouter();
   const { setStatus, isLoading } = useStatus();
-  const {
-    handleSubmit,
-    reset,
-    register,
-    formState: { errors },
-  } = useZodForm({
+  const form = useZodForm({
     schema: verificationFormSchema,
+    defaultValues: { code: "" },
   });
   const onSubmit = async ({ code }: VerificationFormValues) => {
     setStatus("loading");
@@ -50,43 +62,43 @@ export const VerificationStep = ({
     router.reload();
   };
   return (
-    <>
-      <div className={cn("grid gap-2", className)} {...props}>
-        <form
-          onSubmit={handleSubmit(async (values) => {
-            await onSubmit(values);
-            reset();
-          })}
-        >
-          <div className="grid gap-2">
-            <div className="grid gap-1">
-              <Label className="sr-only" htmlFor="code">
-                Code:
-              </Label>
-              <Input
-                id="code"
-                placeholder="ABC123"
-                type="text"
-                autoCapitalize="none"
-                autoCorrect="off"
-                disabled={isLoading}
-                {...register("code")}
-              />
-              {errors?.code && (
-                <p className="px-1 text-xs text-red-600">
-                  {errors.code.message}
-                </p>
-              )}
-            </div>
-            <button className={cn(buttonVariants())} disabled={isLoading}>
-              {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Verify
-            </button>
-          </div>
+    <div className={cn(className)} {...props}>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 ">
+          <FormField
+            control={form.control}
+            name="code"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormLabel>Code:</FormLabel>
+                <FormControl>
+                  <InputOTP
+                    maxLength={6}
+                    pattern={REGEXP_ONLY_DIGITS}
+                    {...field}
+                  >
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" disabled={isLoading}>
+            {isLoading && (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            Verify
+          </Button>
         </form>
-      </div>
-    </>
+      </Form>
+    </div>
   );
 };
