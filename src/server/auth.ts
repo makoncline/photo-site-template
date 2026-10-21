@@ -1,3 +1,4 @@
+import { randomInt } from "node:crypto";
 import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,
@@ -58,17 +59,10 @@ export const authOptions: NextAuthOptions = {
     EmailProvider({
       maxAge: 5 * 60,
       generateVerificationToken() {
-        const tokenLength = 6;
-        const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        const token = Array(tokenLength)
-          .fill("")
-          .map(() => digits[Math.floor(Math.random() * digits.length)])
-          .join("");
-        return token;
+        return randomInt(0, 1_000_000).toString().padStart(6, "0");
       },
       async sendVerificationRequest(params) {
         const { identifier, token } = params;
-        console.log("token", token);
         const url = new URL(params.url);
         url.searchParams.delete("token");
         const signInURL = new URL(

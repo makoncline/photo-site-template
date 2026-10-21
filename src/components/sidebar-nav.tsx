@@ -51,7 +51,7 @@ export function SidebarNav({ items }: SidebarNavProps) {
           <SheetTrigger>
             <Icons.sidebarOpen className="h-5 w-5" />
           </SheetTrigger>
-          <SheetContent position="left">
+          <SheetContent side="left">
             <Nav />
           </SheetContent>
         </Sheet>
